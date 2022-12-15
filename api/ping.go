@@ -1,19 +1,19 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/ini.v1"
-	"fmt"
-	"net/url"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"to-do-list/pkg/util"
 )
 
 var (
-	appid		string
-	secret		string
-	grant_type		string
+	appid      string
+	secret     string
+	grant_type string
 )
 
 func InitWeApp() {
@@ -22,13 +22,18 @@ func InitWeApp() {
 		util.LogrusObj.Info("配置文件读取错误，请检查文件路径:", err)
 		panic(err)
 	}
-	
+
 	appid = file.Section("weapp").Key("appid").String()
 	secret = file.Section("weapp").Key("secret").String()
 	grant_type = file.Section("weapp").Key("grant_type").String()
 }
 
 func Ping(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"data": "hello 你发现我了",
+	})
+	return
+
 	InitWeApp()
 
 	prefix := "https://api.weixin.qq.com/sns/jscode2session"
